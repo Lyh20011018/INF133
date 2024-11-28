@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>To-Do List</h2>
+<form method="POST">
+    <label for="task">Task:</label>
+    <input type="text" id="task" name="task" required>
+    <label for="due_date">Due Date:</label>
+    <input type="date" id="due_date" name="due_date">
+    <button type="submit">Add Task</button>
+</form>
+<ul>
+    {% for task in tasks %}
+    <li>{{ task.task }} - {{ task.due_date }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
