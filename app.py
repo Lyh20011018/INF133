@@ -185,11 +185,11 @@ def get_tasks():
 def create_task():
     try:
         data = request.json
-        print('Received Data:', data)  # 调试信息
+        print('Received Data:', data)  
 
         task = Task(
             title=data['title'],
-            due_date=data.get('due_date'),  # 确保接受并存储 due_date
+            due_date=data.get('due_date'),  
             category=data.get('category'),
             completed=data.get('completed', False)
         )
@@ -198,7 +198,7 @@ def create_task():
         return jsonify({
             'id': task.id,
             'title': task.title,
-            'due_date': task.due_date,  # 返回保存的 due_date
+            'due_date': task.due_date,  
             'category': task.category,
             'completed': task.completed,
         }), 201
