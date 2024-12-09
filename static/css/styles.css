@@ -1,0 +1,484 @@
+/* Global styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+h1, h2, h3 {
+    color: #333;
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Layout container */
+.container {
+    display: flex;
+    height: 100vh;
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Notes section */
+#notes-section {
+    width: 20%;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Notes header */
+#notes-section h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Add Note button */
+#add-note-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#add-note-button:hover {
+    background-color: #0056b3;
+}
+
+/* Search section */
+#search-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#search-section label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#search-date,
+#search-title {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 90%;
+    max-width: 300px;
+    margin-bottom: 5px;
+}
+
+/* Notes list */
+#notes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+#notes-list li {
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#notes-list li:hover {
+    background-color: #f1f1f1;
+    transform: scale(1.02);
+}
+
+/* Calendar section */
+#calendar-section {
+    flex: 1;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* To-Do List section */
+#todo-section {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#todo-section h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Add Task button */
+#todo-section h2 button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#todo-section h2 button:hover {
+    background-color: #0056b3;
+}
+
+/* To-Do List and Completed Tasks */
+#todo-list, #completed-tasks {
+    flex: 1;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    overflow-y: auto;
+    max-height: 40%;
+}
+
+#todo-list {
+    background-color: #fff6f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#completed-tasks {
+    background-color: #e6ffe6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Task item */
+#todo-list li, #completed-tasks li {
+    margin: 8px 0;
+    padding: 12px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s, transform 0.1s;
+    cursor: pointer;
+}
+
+#todo-list li:hover, #completed-tasks li:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.02);
+}
+
+/* Task title and due date */
+.task-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 4px;
+}
+
+.task-due {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Completed task */
+.task-item.completed {
+    background-color: #d3ffd3;
+}
+
+/* Buttons */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Delete button */
+button.delete {
+    background-color: #ff4d4f;
+}
+
+button.delete:hover {
+    background-color: #d9363e;
+}
+
+/* Mark as Complete button */
+button.mark-complete {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+    align-self: flex-end;
+    transition: background-color 0.2s;
+}
+
+button.mark-complete:hover {
+    background-color: #218838;
+}
+
+/* Mark as Incomplete button */
+button.mark-incomplete {
+    background-color: #dc3545;
+    font-size: 12px;
+    padding: 5px 10px;
+}
+
+button.mark-incomplete:hover {
+    background-color: #c82333;
+}
+
+/* Modal styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    max-width: 90%;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    text-align: left;
+}
+
+/* Modal header */
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Input and textarea styling */
+.modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.modal-content textarea {
+    height: 150px;
+    resize: none;
+}
+
+/* Save button */
+.modal-content button#saveNote {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.modal-content button#saveNote:hover {
+    background-color: #218838;
+}
+
+/* Delete button */
+.modal-content button.delete {
+    background-color: #ff4d4f;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex: 1;
+}
+
+.modal-content button.delete:hover {
+    background-color: #d9363e;
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+}
+
+.close:hover {
+    color: black;
+}
+
+/* Unified styling for select and input */
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    appearance: none;
+    background: #fff;
+}
+
+/* Dropdown styling */
+select {
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="gray" d="M2 0L0 2h4z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    padding-right: 30px;
+}
+
+select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    #notes-section, #todo-section, #calendar-section {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    h1, h2, h3 {
+        font-size: 18px;
+    }
+}
+
+input, button {
+    padding: 10px;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    input, button {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
+
+/* Date styling */
+.note-date {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+/* Button row layout */
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Save button styling */
+.save-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.save-button:hover {
+    background-color: #218838;
+}
+
+/* Delete button styling */
+.delete-button {
+    background-color: #ff4d4f;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.delete-button:hover {
+    background-color: #d9363e;
+}
