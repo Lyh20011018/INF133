@@ -74,6 +74,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Update Task List UI
     function updateTaskList(tasks) {
+        tasks.sort((a, b) => {
+            const dateA = new Date(a.due_date || '9999-12-31'); // Default far future date for tasks without a due date
+            const dateB = new Date(b.due_date || '9999-12-31');
+            return dateA - dateB;
+        });
+        
         taskList.innerHTML = '';
         completedList.innerHTML = '';
 
