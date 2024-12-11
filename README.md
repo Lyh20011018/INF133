@@ -33,7 +33,9 @@ The **UCI Student Assistant Web App** is designed to help students effectively m
 - **Modals for Event Handling**:
   - Separate modals for adding/editing events and viewing event details.
   - Prevents overlapping interactions for a seamless user experience.
-
+- **Reminders**:
+  - Notifications appear 30 minutes before a scheduled event.
+  - Reminders are customizable and sent via browser notifications or in-app pop-ups.
 ---
 
 ## Advanced Features
@@ -54,29 +56,75 @@ The **UCI Student Assistant Web App** is designed to help students effectively m
 - Integration between Calendar and To-Do List to prevent duplicate data entry.
 - Task synchronization for a 14-day window to ensure streamlined planning.
 
+### 4. **Reminders**
+
+  - Notifications appear 30 minutes before a scheduled event.
+  - Reminders are customizable and sent via browser notifications or in-app pop-ups.
+
 ---
 
 ## File Structure
 
-### **Backend**
+instance/
+    app.db  # SQLite database file
+static/
+    css/
+        styles.css  # Main stylesheet
+    js/
+        calendar.js  # Calendar functionalities
+        notes.js     # Notes functionalities
+        todo.js      # To-Do functionalities
+templates/
+    index.html  # Main HTML template
+README.md       # This file
+app.py          # Flask application
+credentials.json  # Google API credentials file
+requirements.txt  # Python dependencies
 
-- `app.py`: Main Flask application for managing API endpoints.
-- `models.py`: SQLAlchemy models for tasks and notes.
-- `routes.py`: Defines API routes for tasks, notes, and calendar events.
-- `credentials.json`: Contains Google API credentials (required for Google Calendar integration).
-
-### **Frontend**
-
-- `templates/`: Contains HTML templates for the app.
-  - `index.html`: Main landing page.
-  - `calendar.html`: Calendar page for managing events.
-- `static/`: Contains static assets such as CSS, JavaScript, and images.
-  - `styles.css`: Styling for the entire application.
-  - `scripts/task.js`: Manages To-Do List interactions.
-  - `scripts/note.js`: Handles Note-related functionalities.
-  - `scripts/calendar.js`: Controls Calendar section behavior.
 
 ---
+
+## Setup Instructions
+
+### Prerequisites
+
+1. **Python 3.8 or higher**: Make sure Python is installed on your system.
+2. **Google Cloud Credentials**: Required for Google Calendar API integration.
+
+### Steps to Set Up and Run Locally
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/Lyh20011018/INF133.git
+   cd INF133
+
+3. **Set up a virtual environment**:
+
+   ```bash
+   python -m venv env
+   source env/bin/activate  # On Windows: env\Scripts\activate
+
+
+5. **Install dependencies**:
+
+   ```bash
+   pip install -r requirements.txt
+
+6. **Seup up the database**:
+
+-- Ensure that the app.db file exists in the instance directory. If not, you can initialize it:
+   
+   ```bash
+   flask db init
+   flask db migrate
+   flask db upgrade
+
+7. **Add Google API credentials**:
+
+
+
+8. **Run the application**:
 
 ## Technology Stack
 
