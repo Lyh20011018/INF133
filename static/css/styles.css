@@ -482,3 +482,49 @@ input, button {
 .delete-button:hover {
     background-color: #d9363e;
 }
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification p {
+    margin: 0;
+    font-size: 14px;
+    flex: 1
+}
+
+.notification button.close-notification {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 0
+}
+
+.notification button.close-notification:hover {
+    color: #ccc;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
