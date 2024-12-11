@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         await saveNoteToBackend(note);
         noteModal.style.display = 'none';
+        location.reload()
     });
 
     // Delete note
