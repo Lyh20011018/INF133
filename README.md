@@ -99,32 +99,38 @@ requirements.txt  # Python dependencies
    git clone https://github.com/Lyh20011018/INF133.git
    cd INF133
 
-3. **Set up a virtual environment**:
+2. **Set up a virtual environment**:
 
    ```bash
    python -m venv env
    source env/bin/activate  # On Windows: env\Scripts\activate
 
 
-5. **Install dependencies**:
+3. **Install dependencies**:
 
    ```bash
    pip install -r requirements.txt
+   
+4. **Seup up the database**:
 
-6. **Seup up the database**:
-
--- Ensure that the app.db file exists in the instance directory. If not, you can initialize it:
+- Ensure that the app.db file exists in the instance directory. If not, you can initialize it:
    
    ```bash
    flask db init
    flask db migrate
    flask db upgrade
 
-7. **Add Google API credentials**:
+6. **Add Google API credentials**:
 
+- Obtain the credentials.json file from your Google Cloud Console.
+- Place the credentials.json file in the root directory of your project.
+- Use existed credentials is fine, I added INF133 teaching team in test user.
 
+6. **Run the application**:
 
-8. **Run the application**:
+   ```bash
+   flask run
+
 
 ## Technology Stack
 
