@@ -114,6 +114,16 @@ def add_event():
 
     try:
         data = request.json
+        recurrence_rule = None
+
+        # Handle recurrence based on input
+        if data.get('recurrence') == 'weekly':
+            recurrence_rule = ['RRULE:FREQ=WEEKLY']
+        elif data.get('recurrence') == 'monthly':
+            recurrence_rule = ['RRULE:FREQ=MONTHLY']
+        elif data.get('recurrence') == 'yearly':
+            recurrence_rule = ['RRULE:FREQ=YEARLY']
+
         event = {
             'summary': data['title'],
             'start': {
@@ -125,11 +135,14 @@ def add_event():
                 'timeZone': 'America/Los_Angeles',
             },
             'colorId': get_color_id(data.get('category', 'default')),
+            'recurrence': recurrence_rule  # Add the recurrence rule
         }
+
         created_event = service.events().insert(calendarId='primary', body=event).execute()
         return jsonify(created_event)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 
 @app.route('/api/events/<event_id>', methods=['PUT'])
@@ -185,11 +198,11 @@ def get_tasks():
 def create_task():
     try:
         data = request.json
-        print('Received Data:', data)  
+        print('Received Data:', data)  # 调试信息
 
         task = Task(
             title=data['title'],
-            due_date=data.get('due_date'),  
+            due_date=data.get('due_date'),  # 确保接受并存储 due_date
             category=data.get('category'),
             completed=data.get('completed', False)
         )
@@ -198,7 +211,7 @@ def create_task():
         return jsonify({
             'id': task.id,
             'title': task.title,
-            'due_date': task.due_date,  
+            'due_date': task.due_date,  # 返回保存的 due_date
             'category': task.category,
             'completed': task.completed,
         }), 201
