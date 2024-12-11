@@ -63,7 +63,6 @@ The **UCI Student Assistant Web App** is designed to help students effectively m
 
 ---
 
-## File Structure
 
 ## File Structure
 
