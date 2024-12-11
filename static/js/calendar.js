@@ -10,6 +10,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let currentEvent = null;
 
+    // Request notification permission
+    async function requestNotificationPermission() {
+        if (Notification.permission === 'default') {
+            await Notification.requestPermission();
+        }
+    }
+
     // Initialize FullCalendar
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
@@ -43,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('eventTime').textContent = `Time: ${currentEvent.start.toISOString().slice(11, 16)}`;
             document.getElementById('eventLocation').textContent = `Location: ${currentEvent.extendedProps.location || 'N/A'}`;
             document.getElementById('eventCategory').textContent = `Category: ${currentEvent.extendedProps.category || 'Personal'}`;
-
+            document.getElementById('eventRecurrence').textContent = `Recurrence: ${currentEvent.extendedProps.recurrence || 'None'}`;
             eventDetailModal.style.display = 'block';
         }
     });
@@ -57,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
         form.time.value = '';
         form.location.value = '';
         form.category.value = 'personal';
+        form.recurrence.value = 'none';
     }
 
     // Handle form submission
@@ -68,7 +76,8 @@ document.addEventListener('DOMContentLoaded', function () {
             date: form.date.value.trim(),
             time: form.time.value.trim(),
             location: form.location.value.trim(),
-            category: form.category.value
+            category: form.category.value,
+            recurrence: form.recurrence.value
         };
 
         try {
@@ -88,15 +97,24 @@ document.addEventListener('DOMContentLoaded', function () {
     // Edit event
     editEventButton.addEventListener('click', function () {
         if (currentEvent) {
+            // Populate the form fields with existing event details
             form.title.value = currentEvent.title || '';
-            form.date.value = currentEvent.start.toISOString().slice(0, 10);
-            form.time.value = currentEvent.start.toISOString().slice(11, 16);
+            form.date.value = currentEvent.start.toISOString().slice(0, 10); // Format date
+            form.time.value = currentEvent.start.toISOString().slice(11, 16); // Format time
             form.location.value = currentEvent.extendedProps.location || '';
             form.category.value = currentEvent.extendedProps.category || 'personal';
+            form.recurrence.value = currentEvent.extendedProps.recurrence || 'none'; // Recurrence fallback
+
+            // Display the modal for editing
             eventModal.style.display = 'block';
+
+            // Hide the event detail modal
             eventDetailModal.style.display = 'none';
         }
     });
+
+
+    
 
     // Delete event
     deleteEventButton.addEventListener('click', async function () {
@@ -132,4 +150,88 @@ document.addEventListener('DOMContentLoaded', function () {
             eventDetailModal.style.display = 'none';
         }
     });
+
+    // Show notification for upcoming events
+    function showNotification(event) {
+        if (Notification.permission === 'granted') {
+            // Use browser notification if permission is granted
+            const eventTime = new Date(event.start).toLocaleString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            const notification = new Notification('Upcoming Event Reminder', {
+                body: `Event: ${event.title}\nTime: ${eventTime}`
+            });
+
+            notification.onclick = () => {
+                window.focus(); // Focus the app if clicked
+            };
+        } else {
+            // Fallback to custom notification popup
+            showPopupNotification(event.title, `Scheduled for ${new Date(event.start).toLocaleString('en-US')}`);
+        }
+    }
+
+    // Custom popup notification
+    function showPopupNotification(title, message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+
+        notification.innerHTML = `
+            <p><strong>Reminder:</strong> ${title} is due in 30 minutes!</p>
+            <button class="close-notification">X</button>
+        `;
+
+        // Append notification to the body
+        document.body.appendChild(notification);
+
+        // Add event listener for close button
+        notification.querySelector('.close-notification').addEventListener('click', () => {
+            notification.remove();
+        });
+
+    // Ensure the notification stays visible until manually closed
+    }
+
+
+    // Check for upcoming events
+    async function checkUpcomingEvents() {
+        console.log("Checking for upcoming events...");
+        const events = await fetchEvents();
+        const currentTime = new Date();
+        const timeWindow = 30 * 60 * 1000; // 30 minutes
+
+        events.forEach(event => {
+            const eventStartTime = new Date(event.start);
+            const timeUntilEvent = eventStartTime - currentTime;
+
+            if (timeUntilEvent <= timeWindow && timeUntilEvent > 0) {
+                showNotification(event);
+            }
+        });
+    }
+
+    // Fetch events
+    async function fetchEvents() {
+        try {
+            const response = await axios.get('/api/events');
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching events:', error);
+            return [];
+        }
+    }
+
+    // Check upcoming events periodically
+    setInterval(checkUpcomingEvents, 60 * 1000);
+
+    // Initial setup
+    requestNotificationPermission();
+    checkUpcomingEvents();
 });
+
