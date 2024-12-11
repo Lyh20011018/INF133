@@ -68,7 +68,7 @@ The **UCI Student Assistant Web App** is designed to help students effectively m
 ## File Structure
 
 **Project Directory Structure**
-
+```bash
 instance/
     app.db                # SQLite database file
 static/
@@ -84,7 +84,7 @@ README.md                 # Project README file
 app.py                    # Flask application
 credentials.json          # Google API credentials file
 requirements.txt          # Python dependencies
-
+```
 ---
 
 ## Setup Instructions
