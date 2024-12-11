@@ -65,24 +65,26 @@ The **UCI Student Assistant Web App** is designed to help students effectively m
 
 ## File Structure
 
+## File Structure
+
 **Project Directory Structure**
 
-  ```plaintext
-  instance/
-      app.db                # SQLite database file
-  static/
-      css/
-          styles.css        # Main stylesheet
-      js/
-          calendar.js       # Calendar functionalities
-          notes.js          # Notes functionalities
-          todo.js           # To-Do functionalities
-  templates/
-      index.html            # Main HTML template
-  README.md                 # Project README file
-  app.py                    # Flask application
-  credentials.json          # Google API credentials file
-  requirements.txt          # Python dependencies
+```plaintext
+instance/
+    app.db                # SQLite database file
+static/
+    css/
+        styles.css        # Main stylesheet
+    js/
+        calendar.js       # Calendar functionalities
+        notes.js          # Notes functionalities
+        todo.js           # To-Do functionalities
+templates/
+    index.html            # Main HTML template
+README.md                 # Project README file
+app.py                    # Flask application
+credentials.json          # Google API credentials file
+requirements.txt          # Python dependencies
 
 ---
 
