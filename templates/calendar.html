@@ -74,22 +74,38 @@
             <form id="eventForm">
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" required>
+        
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" required>
+                
                 <label for="time">Time:</label>
                 <input type="time" id="time" name="time" required>
+                
                 <label for="location">Location:</label>
                 <input type="text" id="location" name="location">
+                
                 <label for="category">Category:</label>
                 <select id="category" name="category">
                     <option value="exam">Exam</option>
                     <option value="class">Class</option>
                     <option value="personal">Personal</option>
                 </select>
+        
+                <label for="recurrence">Recurrence:</label>
+                <select id="recurrence" name="recurrence">
+                    <option value="none">None</option>
+                    <option value="weekly">Every Week</option>
+                    <option value="monthly">Every Month</option>
+                    <option value="yearly">Every Year</option>
+                </select>
+                
                 <button type="submit">Save Event</button>
             </form>
         </div>
     </div>
+
+
+    
 
     <!-- Event Details Modal -->
     <div id="eventDetailModal" class="modal">
@@ -100,6 +116,7 @@
             <p id="eventTime">Time: </p>
             <p id="eventLocation">Location: </p>
             <p id="eventCategory">Category: </p>
+            <p id="eventRecurrence">Recurrence: None</p>
             <button id="editEvent">Edit</button>
             <button id="deleteEvent" class="delete">Delete</button>
         </div>
