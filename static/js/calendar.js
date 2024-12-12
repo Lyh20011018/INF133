@@ -10,6 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let currentEvent = null;
 
+    function formatTime(date) {
+        const options = {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true, 
+        };
+        return new Date(date).toLocaleTimeString('en-US', options);
+    }
+
     // Request notification permission
     async function requestNotificationPermission() {
         if (Notification.permission === 'default') {
@@ -26,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             right: 'dayGridMonth,timeGridWeek'
         },
         aspectRatio: 1.5,
+        timeZone: 'local',
         events: async function (fetchInfo, successCallback, failureCallback) {
             try {
                 const response = await axios.get('/api/events');
@@ -43,16 +53,16 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         eventClick: function (info) {
             currentEvent = info.event;
-
-            // Populate event details
+        
             document.getElementById('eventTitle').textContent = currentEvent.title || 'No Title';
             document.getElementById('eventDate').textContent = `Date: ${currentEvent.start.toISOString().slice(0, 10)}`;
-            document.getElementById('eventTime').textContent = `Time: ${currentEvent.start.toISOString().slice(11, 16)}`;
+            document.getElementById('eventTime').textContent = `Time: ${formatTime(new Date(currentEvent.start))}`;
             document.getElementById('eventLocation').textContent = `Location: ${currentEvent.extendedProps.location || 'N/A'}`;
             document.getElementById('eventCategory').textContent = `Category: ${currentEvent.extendedProps.category || 'Personal'}`;
             document.getElementById('eventRecurrence').textContent = `Recurrence: ${currentEvent.extendedProps.recurrence || 'None'}`;
             eventDetailModal.style.display = 'block';
         }
+        
     });
 
     calendar.render();
@@ -97,18 +107,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // Edit event
     editEventButton.addEventListener('click', function () {
         if (currentEvent) {
-            // Populate the form fields with existing event details
             form.title.value = currentEvent.title || '';
-            form.date.value = currentEvent.start.toISOString().slice(0, 10); // Format date
-            form.time.value = currentEvent.start.toISOString().slice(11, 16); // Format time
+            form.date.value = currentEvent.start.toISOString().slice(0, 10);
+            form.time.value = new Date(currentEvent.start).toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+            });
             form.location.value = currentEvent.extendedProps.location || '';
             form.category.value = currentEvent.extendedProps.category || 'personal';
-            form.recurrence.value = currentEvent.extendedProps.recurrence || 'none'; // Recurrence fallback
-
-            // Display the modal for editing
+            form.recurrence.value = currentEvent.extendedProps.recurrence || 'none';
+    
             eventModal.style.display = 'block';
-
-            // Hide the event detail modal
             eventDetailModal.style.display = 'none';
         }
     });
