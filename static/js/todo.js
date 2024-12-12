@@ -133,13 +133,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // Toggle task completion
     async function toggleTaskCompletion(task, completed) {
         try {
+            if (task.id.startsWith('cal-')) {
+                task.completed = completed;
+                updateTaskList(tasks);
+                return; 
+            }
+    
             task.completed = completed;
             await axios.put(`/api/tasks/${task.id}`, task);
-            fetchTasks();
+            fetchTasks(); 
         } catch (error) {
             console.error('Error updating task completion:', error);
+            alert('Failed to update task completion.');
         }
     }
+    
+
+    
 
     // Open Task Modal
     function openTaskModal(task) {
