@@ -3,6 +3,8 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+import pytz
 import secrets
 import os
 
@@ -73,6 +75,12 @@ def calendar():
         return redirect(url_for('index'))
     return render_template('calendar.html')
 
+### Helper Function for Timezone Awareness ###
+def to_timezone_aware(datetime_string, timezone='America/Los_Angeles'):
+    naive_datetime = datetime.fromisoformat(datetime_string)
+    local_tz = pytz.timezone(timezone)
+    return local_tz.localize(naive_datetime).isoformat()
+
 ### Calendar Events APIs ###
 @app.route('/api/events', methods=['GET'])
 def get_events():
@@ -124,14 +132,17 @@ def add_event():
         elif data.get('recurrence') == 'yearly':
             recurrence_rule = ['RRULE:FREQ=YEARLY']
 
+        start_datetime = to_timezone_aware(f"{data['date']}T{data['time']}:00")
+        end_datetime = to_timezone_aware(f"{data['date']}T{data['time']}:00")
+        
         event = {
             'summary': data['title'],
             'start': {
-                'dateTime': f"{data['date']}T{data['time']}:00",
+                'dateTime': start_datetime,
                 'timeZone': 'America/Los_Angeles',
             },
             'end': {
-                'dateTime': f"{data['date']}T{data['time']}:00",
+                'dateTime': end_datetime,
                 'timeZone': 'America/Los_Angeles',
             },
             'colorId': get_color_id(data.get('category', 'default')),
@@ -155,10 +166,14 @@ def update_event(event_id):
 
     try:
         data = request.json
+
+        start_datetime = to_timezone_aware(f"{data['date']}T{data['time']}:00")
+        end_datetime = to_timezone_aware(f"{data['date']}T{data['time']}:00")
+
         event = {
             'summary': data['title'],
-            'start': {'dateTime': f"{data['date']}T{data['time']}:00", 'timeZone': 'America/Los_Angeles'},
-            'end': {'dateTime': f"{data['date']}T{data['time']}:00", 'timeZone': 'America/Los_Angeles'},
+            'start': {'dateTime': start_datetime, 'timeZone': 'America/Los_Angeles'},
+            'end': {'dateTime': end_datetime, 'timeZone': 'America/Los_Angeles'},
         }
         updated_event = service.events().update(calendarId='primary', eventId=event_id, body=event).execute()
         return jsonify(updated_event)
@@ -198,11 +213,11 @@ def get_tasks():
 def create_task():
     try:
         data = request.json
-        print('Received Data:', data)  # 调试信息
+        print('Received Data:', data)  
 
         task = Task(
             title=data['title'],
-            due_date=data.get('due_date'),  # 确保接受并存储 due_date
+            due_date=data.get('due_date'), 
             category=data.get('category'),
             completed=data.get('completed', False)
         )
@@ -211,7 +226,7 @@ def create_task():
         return jsonify({
             'id': task.id,
             'title': task.title,
-            'due_date': task.due_date,  # 返回保存的 due_date
+            'due_date': task.due_date,  
             'category': task.category,
             'completed': task.completed,
         }), 201
@@ -223,32 +238,19 @@ def create_task():
 
 
 
-@app.route('/api/tasks/<int:task_id>', methods=['PUT'])
+@app.route('/api/tasks/<task_id>', methods=['PUT'])
 def update_task(task_id):
     try:
-        task = Task.query.get(task_id)
+        if task_id.startswith('cal-'):
+            return jsonify({'error': 'Cannot update calendar tasks directly'}), 400
+
+        task = Task.query.get(int(task_id))  
         if not task:
             return jsonify({'error': 'Task not found'}), 404
 
         data = request.json
 
-        # Validate and format due_date
-        due_date = data.get('due_date')
-        if due_date:
-            try:
-                from dateutil.parser import parse
-                due_date = parse(due_date).isoformat()
-            except ValueError:
-                return jsonify({'error': 'Invalid due_date format'}), 400
-        else:
-            due_date = None
-
-        # Update task attributes
-        task.title = data['title']
-        task.due_date = due_date
-        task.category = data.get('category', task.category)
         task.completed = data.get('completed', task.completed)
-
         db.session.commit()
 
         return jsonify({'status': 'success'})
@@ -256,10 +258,17 @@ def update_task(task_id):
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/api/tasks/<int:task_id>', methods=['DELETE'])
+
+
+@app.route('/api/tasks/<task_id>', methods=['DELETE'])
 def delete_task(task_id):
     try:
-        task = Task.query.get(task_id)
+        # Handle calendar tasks
+        if task_id.startswith('cal-'):
+            return jsonify({'error': 'Cannot delete calendar tasks directly'}), 400
+
+        # Handle regular tasks
+        task = Task.query.get(int(task_id))  # Convert to integer
         if not task:
             return jsonify({'error': 'Task not found'}), 404
 
@@ -268,6 +277,7 @@ def delete_task(task_id):
         return jsonify({'status': 'success'})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 ### Notes APIs ###
 @app.route('/api/notes', methods=['GET'])
