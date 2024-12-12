@@ -131,7 +131,7 @@ requirements.txt          # Python dependencies
 6. **Run the application**:
 
    ```bash
-   flask run
+   python app.py
 
 ---
 
